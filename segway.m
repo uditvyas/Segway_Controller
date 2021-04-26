@@ -47,20 +47,22 @@ sys_ss = ss(A,B,C,D,'statename',states,'inputname',inputs,'outputname',outputs);
 
 sys_tf = tf(sys_ss);
 
-tspan = 0:.1:10;
-y0 = [2; 0; pi/6; .5];
+tspan = 0:.01:5;
+y0 = [2; 0; -pi/6; -.5];
 [t,x] = ode45(@(t,x)segway_state_eqns(x,k1, k2, k3, k4, k5, 0),tspan,y0);
-plot(t, x(:, 1))
+% plot(t, x(:, 1))
 
-for k=1:length(t)
-    drawcartpend_bw(x(k,:),m,M,2*l);
+
+figure
+for q=1:length(t)
+    drawcartpend(x(q,:),m,M,2*l);
 end
-x(:,1)
-% eigs = [-2.1; -2.3;-2.5;-2.7];
-% K = place(A, B, eigs);  
-% 
-% tspan = 0:0.00001:10;
-% y0 = [2; 0; pi/6; .5];
-% [t,x] = ode45(@(t,x)segway_state_eqns(x,k1, k2, k3, k4, k5, -K*(x - [-2; 0; 0; 0])),tspan,y0);
-% figure
-%plot(t, x(:, 1))
+
+
+eigs = [-1.1; -1.3;-1.5;-1.7];
+K = place(A, B, eigs);  
+
+tspan = 0:0.1:5;
+y0 = [2; 0; pi/12; 0];
+[t,x] = ode45(@(t,x)segway_state_eqns(x,k1, k2, k3, k4, k5, -K*(x - [-2; 0; 0; 0])),tspan,y0);
+
